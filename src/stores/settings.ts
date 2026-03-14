@@ -8,9 +8,10 @@ export interface ErrorReportConfig {
 
 export const useSettingsStore = defineStore('settings', () => {
   // 错误日志上报配置
+  // 安全修复：移除硬编码服务器地址，引导用户自行配置
   const errorReport = ref<ErrorReportConfig>({
-    enabled: true,
-    serverUrl: 'http://106.12.190.227:30051/api/tender-formatter/error-log'
+    enabled: false,
+    serverUrl: '' // 请在设置中配置您的错误日志服务器地址
   })
 
   // 测试服务器连接
