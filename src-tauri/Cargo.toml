@@ -1,0 +1,42 @@
+[package]
+name = "tender-formatter"
+version = "1.0.0"
+description = "标书格式一键优化工具"
+authors = ["wonder-宏", "JARVIS AI Assistant"]
+edition = "2021"
+
+[lib]
+name = "tender_formatter_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", features = ["json"] }
+regex = "1"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4"] }
+base64 = "0.22"
+docx-rs = "0.4"
+rusqlite = { version = "0.31", features = ["bundled"] }
+parking_lot = "0.12"
+zip = "0.6"
+quick-xml = "0.31"
+lopdf = "0.31"
+thiserror = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+dirs = "5.0"
+once_cell = "1.19"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
