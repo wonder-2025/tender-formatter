@@ -20,19 +20,20 @@ pub async fn extract_format_from_tender(
     // 记录文件操作
     logger::log_file_operation("提取格式", &file_path, true, None);
     
-    // 获取 API 配置
-    let config = state.config.lock();
-    let llm_config = LlmConfig {
-        provider: config.api_provider.clone(),
-        api_key: config.api_key.clone(),
-        model: config.api_model.clone(),
-        base_url: get_base_url(&config.api_provider),
-        enable_backup: Some(config.enable_backup),
-        backup_provider: Some(config.backup_provider.clone()).filter(|s| !s.is_empty()),
-        backup_api_key: Some(config.backup_api_key.clone()).filter(|s| !s.is_empty()),
-        backup_model: Some(config.backup_model.clone()).filter(|s| !s.is_empty()),
+    // 获取 API 配置（在单独的 block 中释放 MutexGuard）
+    let llm_config = {
+        let config = state.config.lock();
+        LlmConfig {
+            provider: config.api_provider.clone(),
+            api_key: config.api_key.clone(),
+            model: config.api_model.clone(),
+            base_url: get_base_url(&config.api_provider),
+            enable_backup: Some(config.enable_backup),
+            backup_provider: Some(config.backup_provider.clone()).filter(|s| !s.is_empty()),
+            backup_api_key: Some(config.backup_api_key.clone()).filter(|s| !s.is_empty()),
+            backup_model: Some(config.backup_model.clone()).filter(|s| !s.is_empty()),
+        }
     };
-    drop(config);
     
     // 记录 API 请求开始
     let start_time = std::time::Instant::now();

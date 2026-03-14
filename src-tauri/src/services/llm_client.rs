@@ -393,7 +393,7 @@ pub async fn chat_with_fallback(config: &LlmConfig, prompt: String) -> Result<St
     // 先尝试主模型
     match chat(config, prompt.clone()).await {
         Ok(result) => {
-            logger::log_info(&format!("主模型请求成功: provider={}, model={}", config.provider, config.model));
+            logger::log_debug("LLM", &format!("主模型请求成功: provider={}, model={}", config.provider, config.model));
             Ok(result)
         }
         Err(e) => {
@@ -402,7 +402,7 @@ pub async fn chat_with_fallback(config: &LlmConfig, prompt: String) -> Result<St
                 if let (Some(backup_provider), Some(backup_api_key), Some(backup_model)) = 
                     (&config.backup_provider, &config.backup_api_key, &config.backup_model) {
                     
-                    logger::log_warn(&format!("主模型请求失败，切换备用模型: {} -> {}", config.provider, backup_provider));
+                    logger::log_debug("LLM", &format!("主模型请求失败，切换备用模型: {} -> {}", config.provider, backup_provider));
                     
                     // 构建备用配置
                     let backup_config = LlmConfig {
@@ -419,11 +419,11 @@ pub async fn chat_with_fallback(config: &LlmConfig, prompt: String) -> Result<St
                     // 使用备用模型重试
                     match chat(&backup_config, prompt).await {
                         Ok(result) => {
-                            logger::log_info(&format!("备用模型请求成功: provider={}, model={}", backup_provider, backup_model));
+                            logger::log_debug("LLM", &format!("备用模型请求成功: provider={}, model={}", backup_provider, backup_model));
                             Ok(result)
                         }
                         Err(backup_err) => {
-                            logger::log_error(&format!("备用模型也失败: {}", backup_err));
+                            logger::log_debug("LLM", &format!("备用模型也失败: {}", backup_err));
                             Err(LlmError::ApiError(format!(
                                 "主模型和备用模型都失败: 主模型={}, 备用模型={}", 
                                 e, backup_err

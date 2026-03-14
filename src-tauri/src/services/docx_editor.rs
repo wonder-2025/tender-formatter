@@ -8,7 +8,7 @@ use std::path::Path;
 use std::fs;
 use std::io::{Read, Write, Cursor};
 use zip::{ZipArchive, ZipWriter};
-use zip::write::SimpleFileOptions;
+use zip::write::FileOptions;
 use quick_xml::{Reader, Writer, events::Event};
 
 /// Word 文档编辑器
@@ -54,17 +54,17 @@ impl DocxEditor {
                 let name = file.name().to_string();
                 
                 if name == "word/document.xml" {
-                    writer.start_file(&name, SimpleFileOptions::default())
+                    writer.start_file(&name, FileOptions::default())
                         .map_err(|e| DocxError::WriteError(e.to_string()))?;
                     writer.write_all(&document_xml)
                         .map_err(|e| DocxError::WriteError(e.to_string()))?;
                 } else if name == "word/styles.xml" {
-                    writer.start_file(&name, SimpleFileOptions::default())
+                    writer.start_file(&name, FileOptions::default())
                         .map_err(|e| DocxError::WriteError(e.to_string()))?;
                     writer.write_all(&styles_xml)
                         .map_err(|e| DocxError::WriteError(e.to_string()))?;
                 } else {
-                    writer.start_file(&name, SimpleFileOptions::default())
+                    writer.start_file(&name, FileOptions::default())
                         .map_err(|e| DocxError::WriteError(e.to_string()))?;
                     std::io::copy(&mut file, &mut writer)
                         .map_err(|e| DocxError::WriteError(e.to_string()))?;

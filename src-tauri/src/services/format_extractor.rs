@@ -29,7 +29,7 @@ pub async fn extract_format(
     // 4. 调用 LLM API
     let response = chat_with_fallback(config, prompt)
         .await
-        .map_err(|e| FormatExtractError::LlmError(e))?;
+        .map_err(|e| FormatExtractError::LlmError(e.to_string()))?;
     
     // 5. 解析返回结果
     parse_format_response(&response)
