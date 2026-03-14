@@ -174,7 +174,7 @@ function handleTenderDrop(e: DragEvent) {
   if (files && files.length > 0) {
     const file = files[0]
     if (['.docx', '.doc', '.pdf'].some(ext => file.name.endsWith(ext))) {
-      tenderDocument.value = file.path || file.name
+      tenderDocument.value = (file as any).path || file.name
       ElMessage.success('已选择招标文件')
     } else {
       ElMessage.warning('请选择 .docx .doc .pdf 格式')
@@ -196,8 +196,8 @@ function handleBidDrop(e: DragEvent) {
   if (files && files.length > 0) {
     const file = files[0]
     if (['.docx', '.doc', '.wps'].some(ext => file.name.endsWith(ext))) {
-      currentDocument.value = file.path || file.name
-      store.setCurrentDocument(file.path || file.name)
+      currentDocument.value = (file as any).path || file.name
+      store.setCurrentDocument((file as any).path || file.name)
       ElMessage.success('已选择投标文件')
     } else {
       ElMessage.warning('请选择 .docx .doc .wps 格式')

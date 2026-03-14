@@ -49,6 +49,7 @@ export interface FormatTemplate {
   isPreset: boolean
   createdAt: string
   lastUsedAt?: string
+  tags?: string[]
 }
 
 export const useFormatStore = defineStore('format', () => {

@@ -315,7 +315,7 @@ onMounted(() => {
 
 async function saveAsTemplate() {
   try {
-    const template = await invoke('save_template', {
+    await invoke('save_template', {
       name: `自定义模板 ${new Date().toLocaleDateString()}`,
       description: generateTemplateDescription(),
       format: format

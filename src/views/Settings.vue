@@ -452,8 +452,8 @@ async function saveDebugConfig() {
 async function loadLogStats() {
   try {
     logStats.value = await invoke('get_log_stats')
-    if (logStats.value) {
-      debugSettings.logFilePath = logStats.value.log_directory
+    if (logStats.value && (logStats.value as any).log_directory) {
+      debugSettings.logFilePath = (logStats.value as any).log_directory
     }
   } catch (error) {
     console.error('加载日志统计失败:', error)

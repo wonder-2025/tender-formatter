@@ -143,7 +143,7 @@ const copyFileName = computed(() => {
 
 function getCategoryTagType(category: string): '' | 'success' | 'warning' | 'info' | 'danger' {
   const types: Record<string, '' | 'success' | 'warning' | 'info' | 'danger'> = {
-    '页面设置': 'primary',
+    '页面设置': 'info',
     '字体格式': 'warning',
     '标题格式': 'success',
     '页眉页脚': 'info',
