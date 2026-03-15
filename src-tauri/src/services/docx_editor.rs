@@ -50,7 +50,8 @@ impl DocxEditor {
             
             // 复制所有文件
             for i in 0..archive.len() {
-                let mut file = archive.by_index(i).unwrap();
+                let mut file = archive.by_index(i)
+                    .expect("ZIP文件索引越界");
                 let name = file.name().to_string();
                 
                 if name == "word/document.xml" {
@@ -155,7 +156,8 @@ impl DocxEditor {
         );
         
         // 替换 sectPr
-        let sect_pr_regex = regex::Regex::new(r"<w:sectPr>.*?</w:sectPr>").unwrap();
+        let sect_pr_regex = regex::Regex::new(r"<w:sectPr>.*?</w:sectPr>")
+            .expect("无效的正则表达式模式: sectPr");
         let result = sect_pr_regex.replace(xml, &new_sect_pr).to_string();
         
         Ok(result)
@@ -176,8 +178,10 @@ impl DocxEditor {
         };
         
         // 修改所有段落的行间距
-        let p_pr_regex = regex::Regex::new(r"<w:pPr>(.*?)</w:pPr>").unwrap();
-        let spacing_regex = regex::Regex::new(r"<w:spacing[^>]*/>").unwrap();
+        let p_pr_regex = regex::Regex::new(r"<w:pPr>(.*?)</w:pPr>")
+            .expect("无效的正则表达式模式: pPr");
+        let spacing_regex = regex::Regex::new(r"<w:spacing[^>]*/>")
+            .expect("无效的正则表达式模式: spacing");
         
         result = p_pr_regex.replace_all(&result, |caps: &regex::Captures| {
             let content = caps.get(1).map_or("", |m| m.as_str());
@@ -230,15 +234,19 @@ impl DocxEditor {
         // 替换 Normal 样式中的字体和字号
         let normal_regex = regex::Regex::new(
             r#"(<w:style[^>]*w:styleId="Normal"[^>]*>.*?</w:style>)"#
-        ).unwrap();
+        ).expect("无效的正则表达式模式: Normal style");
         
         let result = xml.to_string();
         
         // 修改文档默认字体
-        let rfonts_regex = regex::Regex::new(r#"w:ascii="[^"]*""#).unwrap();
-        let east_asia_regex = regex::Regex::new(r#"w:eastAsia="[^"]*""#).unwrap();
-        let sz_regex = regex::Regex::new(r#"<w:sz w:val="\d+"/>"#).unwrap();
-        let sz_cs_regex = regex::Regex::new(r#"<w:szCs w:val="\d+"/>"#).unwrap();
+        let rfonts_regex = regex::Regex::new(r#"w:ascii="[^"]*""#)
+            .expect("无效的正则表达式模式: rfonts");
+        let east_asia_regex = regex::Regex::new(r#"w:eastAsia="[^"]*""#)
+            .expect("无效的正则表达式模式: eastAsia");
+        let sz_regex = regex::Regex::new(r#"<w:sz w:val="\d+"/>"#)
+            .expect("无效的正则表达式模式: sz");
+        let sz_cs_regex = regex::Regex::new(r#"<w:szCs w:val="\d+"/>"#)
+            .expect("无效的正则表达式模式: szCs");
         
         let mut result = rfonts_regex.replace_all(&result, &format!(r#"w:ascii="{}""#, format.body_font)).to_string();
         result = east_asia_regex.replace_all(&result, &format!(r#"w:eastAsia="{}""#, format.body_font)).to_string();
@@ -265,14 +273,18 @@ impl DocxEditor {
             r#"(<w:style[^>]*w:styleId="{}"[^>]*>.*?</w:style>)"#,
             style_id
         );
-        let heading_regex = regex::Regex::new(&pattern).unwrap();
+        let heading_regex = regex::Regex::new(&pattern)
+            .expect("无效的正则表达式模式: heading style");
         
         let mut result = xml.to_string();
         
         // 修改字体
-        let rfonts_regex = regex::Regex::new(r#"w:eastAsia="[^"]*""#).unwrap();
-        let sz_regex = regex::Regex::new(r#"<w:sz w:val="\d+"/>"#).unwrap();
-        let spacing_regex = regex::Regex::new(r#"<w:spacing[^>]*/>"#).unwrap();
+        let rfonts_regex = regex::Regex::new(r#"w:eastAsia="[^"]*""#)
+            .expect("无效的正则表达式模式: rfonts");
+        let sz_regex = regex::Regex::new(r#"<w:sz w:val="\d+"/>"#)
+            .expect("无效的正则表达式模式: sz");
+        let spacing_regex = regex::Regex::new(r#"<w:spacing[^>]*/>"#)
+            .expect("无效的正则表达式模式: spacing");
         
         // 在标题样式区域进行替换
         if let Some(caps) = heading_regex.captures(&result) {

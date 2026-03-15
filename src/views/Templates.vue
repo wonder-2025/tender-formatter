@@ -286,6 +286,7 @@ async function loadTemplates() {
     customTemplates.value = templates.filter(t => !t.isPreset)
   } catch (error) {
     console.error('加载模板失败:', error)
+    ElMessage.error(`加载模板失败: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 

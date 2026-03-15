@@ -86,7 +86,7 @@ impl Default for CurrentDocumentFormat {
             
             body_font: "宋体".to_string(),
             body_font_size: "小四".to_string(),
-            body_line_height: "1.0倍".to_string(),
+            body_line_height: "1.5倍".to_string(),
             body_paragraph_spacing: ParagraphSpacing { before: 0.0, after: 0.0 },
             
             heading1: None,

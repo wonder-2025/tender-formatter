@@ -118,6 +118,12 @@ pub fn log_desensitize(original: &str, desensitized: &str, rules: &[String]) {
 }
 
 /// 记录 API 请求
+/// 
+/// # 安全说明
+/// API Key 在日志中以脱敏形式存储（仅显示前4位和后4位）。
+/// 这是一个安全权衡：日志用于调试，但敏感信息需要保护。
+/// 生产环境建议：使用专门的密钥管理服务（如 HashiCorp Vault），
+/// 并在日志审计中实施严格的访问控制。
 pub fn log_api_request(
     provider: &str,
     endpoint: &str,
@@ -130,7 +136,7 @@ pub fn log_api_request(
         return;
     }
     
-    // 脱敏 API Key
+    // 脱敏 API Key - 安全措施：日志中不应记录完整的敏感凭证
     let masked_key = api_key.map(|k| mask_sensitive(k, 4, 4));
     let auth_line = masked_key.map(|k| format!("\n  Authorization: Bearer {}...", k)).unwrap_or_default();
     

@@ -349,6 +349,7 @@ async function goToPreview() {
       store.setFormatDiffs(diffs)
     } catch (error) {
       console.error('分析失败:', error)
+      ElMessage.warning('文档格式分析失败，请检查文档是否正确')
     }
   }
   

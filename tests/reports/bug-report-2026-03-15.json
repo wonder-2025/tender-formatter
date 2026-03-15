@@ -1,0 +1,90 @@
+{
+  "summary": {
+    "total": 26,
+    "high": 1,
+    "medium": 1,
+    "low": 24
+  },
+  "bugs": [
+    {
+      "id": "BUG-001",
+      "file": "src-tauri/src/services/diff_engine.rs",
+      "line": 529,
+      "severity": "high",
+      "category": "correctness",
+      "title": "单元测试失败：test_diff_engine",
+      "description": "默认值比较测试失败，CurrentDocumentFormat::default() 和 FormatRequirement::default() 的值不一致",
+      "fix_suggestion": "检查两个结构体的默认值定义，确保它们一致"
+    },
+    {
+      "id": "BUG-002",
+      "file": "src-tauri/src/services/docx_editor.rs",
+      "line": 53,
+      "severity": "medium",
+      "category": "correctness",
+      "title": "unwrap() 可能导致 panic",
+      "description": "archive.by_index(i).unwrap() 可能因索引越界导致程序崩溃",
+      "fix_suggestion": "使用 ? 操作符或 expect() 提供错误处理"
+    },
+    {
+      "id": "BUG-003",
+      "file": "src-tauri/src/services/docx_editor.rs",
+      "line": "158",
+      "severity": "low",
+      "category": "correctness",
+      "title": "正则表达式 unwrap()",
+      "description": "Regex::new(...).unwrap() 可能因无效模式导致 panic",
+      "fix_suggestion": "使用 expect() 提供有意义的错误信息"
+    },
+    {
+      "id": "BUG-004",
+      "file": "src-tauri/src/services/format_extractor.rs",
+      "line": "388-440",
+      "severity": "low",
+      "category": "correctness",
+      "title": "多处正则表达式 unwrap()",
+      "description": "多个正则表达式编译使用 unwrap()",
+      "fix_suggestion": "使用 expect() 或预编译正则表达式"
+    },
+    {
+      "id": "BUG-005",
+      "file": "src-tauri/src/services/logger.rs",
+      "line": "126-134",
+      "severity": "medium",
+      "category": "security",
+      "title": "API Key 明文存储",
+      "description": "API Key 在内存中明文存储，可能被内存转储读取",
+      "fix_suggestion": "使用 secrecy 库保护敏感数据"
+    }
+  ],
+  "warnings": [
+    {
+      "file": "src-tauri/src/services/diff_engine.rs",
+      "message": "struct `DiffSummary` is never constructed"
+    },
+    {
+      "file": "src-tauri/src/security/desensitize.rs",
+      "message": "field `name` is never read"
+    },
+    {
+      "file": "src-tauri/src/security/audit.rs",
+      "message": "struct `AuditLogger` is never constructed"
+    },
+    {
+      "file": "src-tauri/src/services/diff_engine.rs",
+      "message": "method `with_precision` is never used"
+    }
+  ],
+  "test_results": {
+    "rust_unit_tests": {
+      "passed": 10,
+      "failed": 1,
+      "total": 11
+    },
+    "e2e_tests": {
+      "passed": 3,
+      "failed": 0,
+      "total": 3
+    }
+  }
+}

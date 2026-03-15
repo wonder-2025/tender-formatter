@@ -429,6 +429,7 @@ async function loadDebugConfig() {
     await loadLogStats()
   } catch (error) {
     console.error('加载 Debug 配置失败:', error)
+    ElMessage.error(`加载 Debug 配置失败: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 
@@ -445,6 +446,7 @@ async function saveDebugConfig() {
     })
   } catch (error) {
     console.error('保存 Debug 配置失败:', error)
+    ElMessage.error(`保存 Debug 配置失败: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 
@@ -457,6 +459,7 @@ async function loadLogStats() {
     }
   } catch (error) {
     console.error('加载日志统计失败:', error)
+    // 不显示错误提示，使用默认值
   }
 }
 
